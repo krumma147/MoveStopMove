@@ -10,28 +10,39 @@ public class Player : Character
     [SerializeField] private FloatingJoystick _joystick;
 	[SerializeField] private Animator anim;
     private List<Enemy> enemies;
-    private bool isMoving;
-    //private bool isAttack;
+    private PlayerState currentState;
+
+    public enum PlayerState
+	{
+        Idle,
+        Moving,
+        Attacking,
+        Death
+	}
     
     void Start()
     {
-		anim = GetComponent<Animator>();
+        currentState = PlayerState.Idle;
+        anim = GetComponent<Animator>();
 		enemies = new List<Enemy>();
-		isMoving = false;
-		//isAttack = false;
 	}
 
     // Update is called once per frame
     void Update()
     {
         Moving();
-        Attack();
         DetectEnemy();
-        if (enemies.Count > 0 || !isMoving)
+        if (enemies.Count > 0 && currentState != PlayerState.Moving)
         {
 			Enemy target = SelectEnemy();
-            //Debug.Log("Found target: " + target.name + ", with distance of:" + target.getDistanceToPlayer());
-            Attack(); // add delay time by using Caroutine or something similar
+            if(target != null)
+			{
+                //Debug.Log("Found target: " + target.name + ", with distance of:" + target.getDistanceToPlayer());
+                //Attack(); // add delay time by using Caroutine or something similar
+                enemies.Clear();
+                StartCoroutine(Attack(target));
+                target = null;
+            }
 		}
         
 	}
@@ -46,15 +57,22 @@ public class Player : Character
 			{
 				transform.LookAt(transform.position + joyDir);
 			}
-            anim.SetBool("IsIdle", false);
+            if(currentState != PlayerState.Moving)
+			{
+                currentState = PlayerState.Moving;
+                anim.SetBool("IsIdle", false);
+                anim.SetBool("IsAttack", false);
+            }
 			transform.position = nextDestination;
-			isMoving = true;
 		}
         else
         {
-			anim.SetBool("IsIdle", true);
-			isMoving = false;
-		}
+            if (currentState != PlayerState.Idle)
+            {
+                currentState = PlayerState.Idle;
+                anim.SetBool("IsIdle", true);
+            }
+        }
 	}
 
     public Enemy SelectEnemy()
@@ -81,7 +99,8 @@ public class Player : Character
 
     public void DetectEnemy()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 10f);
+        enemies.Clear();
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 5f);
         for(int i = 0; i < colliders.Length; i++)
         {
             Enemy enym = colliders[i].GetComponent<Enemy>();
@@ -94,24 +113,26 @@ public class Player : Character
 			}
         }
     }
-
-	void OnDrawGizmosSelected()
+    // Let Attack function to allow user to look at target direction
+	IEnumerator Attack(Enemy enemy)
 	{
-		// Draw a yellow sphere at the transform's position
-		Gizmos.color = Color.yellow;
-		Gizmos.DrawSphere(transform.position, 10f);
-	}
-
-	public void Attack()
-    {
-      anim.SetBool("IsAttack", true);
-      Invoke(nameof(StopAttack), 3f);
+        if (currentState == PlayerState.Moving)
+        {
+            yield break;
+        }
+        currentState = PlayerState.Attacking;
+        anim.SetBool("IsAttack", true);
+        anim.SetBool("IsIdle", false);
+        yield return new WaitForSeconds(2);
+        Debug.Log("Done Attack after 2 second cd");
+        anim.SetBool("IsAttack", false);
+        if (currentState != PlayerState.Moving)
+        {
+            anim.SetBool("IsAttack", false);
+            currentState = PlayerState.Idle;
+            anim.SetBool("IsIdle", true);
+        }
     }
-
-    public void StopAttack()
-    {
-		anim.SetBool("IsAttack", false);
-	}
 
 	private Vector3 CheckGround(Vector3 nextDestination)
 	{
