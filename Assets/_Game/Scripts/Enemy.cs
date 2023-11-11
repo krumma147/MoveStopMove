@@ -8,14 +8,14 @@ public class Enemy : Character
     private float distance;
     void Start()
     {
-        
-    }
+
+	}
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
+
+	}
 
     public void setDistanceToPlayer(float distance)
     {
@@ -26,4 +26,9 @@ public class Enemy : Character
     {
         return distance;
     }
+
+	public void OnDestroy()
+	{
+		Destroy(gameObject);
+	}
 }
