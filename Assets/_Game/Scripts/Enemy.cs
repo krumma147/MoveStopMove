@@ -8,8 +8,8 @@ public class Enemy : Character
     private float distance;
     void Start()
     {
-
-	}
+        anim = GetComponent<Animator>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -25,6 +25,12 @@ public class Enemy : Character
     public float getDistanceToPlayer()
     {
         return distance;
+    }
+
+    public void OnDeath()
+	{
+        currentState = PlayerState.Death;
+        anim.SetBool("IsDead", true);
     }
 
 	public void OnDestroy()

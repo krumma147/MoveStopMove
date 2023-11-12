@@ -34,7 +34,7 @@ public class Character : MonoBehaviour
 		
 	}
 
-	public void OnInit()
+	virtual public void OnInit()
 	{
 		currentState = PlayerState.Idle;
 		enemies = new List<Enemy>();
@@ -69,7 +69,7 @@ public class Character : MonoBehaviour
 		for (int i = 0; i < colliders.Length; i++)
 		{
 			Enemy enemy = colliders[i].GetComponent<Enemy>();
-			if (enemy != null && colliders[i].CompareTag("Enemy"))
+			if (enemy != null && colliders[i].CompareTag("Enemy") && enemy.currentState != PlayerState.Death)
 			{
 				float dis = Vector3.Distance(transform.position, enemy.transform.position);
 				enemy.setDistanceToPlayer(dis);
@@ -93,7 +93,7 @@ public class Character : MonoBehaviour
 			anim.SetBool("IsIdle", false);
 			//weaponPrefabs.SetActive(false); //Set ưeapon prefab to be false cause the bullets not visible
 			//enemy.OnDestroy();
-			ThrowWeapon();
+			ThrowWeapon(enemy);
 			yield return new WaitForSeconds(1.5f);
 			ResetAttack();
 		}
@@ -107,8 +107,10 @@ public class Character : MonoBehaviour
 		canAtack = false;
 	}
 
-	public void ThrowWeapon()
+	public void ThrowWeapon(Enemy enemy)
 	{
-		Instantiate(weaponPrefabs, weaponBox.position, weaponBox.rotation);
+		GameObject obj = Instantiate(weaponPrefabs, weaponBox.position, weaponBox.rotation);
+		Weapon weap = obj.GetComponent<Weapon>();
+		weap.target = enemy.transform.position;
 	}
 }

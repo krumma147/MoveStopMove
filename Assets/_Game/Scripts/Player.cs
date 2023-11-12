@@ -9,7 +9,13 @@ public class Player : Character
 	[SerializeField] private FloatingJoystick _joystick;
 	void Start()
     {
+		OnInit();
+	}
+
+	override public void OnInit()
+	{
 		anim = GetComponent<Animator>();
+		CameraManager.Instance.SetTarget(gameObject.transform);
 	}
 
     // Update is called once per frame
@@ -26,7 +32,6 @@ public class Player : Character
 				Attack(target); // add delay time by using Caroutine or something similar
 				enemies.Clear();
 				StartCoroutine(Attack(target));
-				target = null;
 			}
 		}
 	}
