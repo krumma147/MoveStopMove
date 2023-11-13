@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -964,10 +964,6 @@ PrefabInstance:
       propertyPath: _joystick
       value: 
       objectReference: {fileID: 1444805834}
-    - target: {fileID: 126872196, guid: a71a54a3ce47ad941b6a5d31b4af57bc, type: 3}
-      propertyPath: weaponPrefabs
-      value: 
-      objectReference: {fileID: 423340117753806475, guid: 1fac6f8ee7271184387ee96f5c3bfa28, type: 3}
     - target: {fileID: 6623981018576468138, guid: a71a54a3ce47ad941b6a5d31b4af57bc, type: 3}
       propertyPath: m_Name
       value: Player

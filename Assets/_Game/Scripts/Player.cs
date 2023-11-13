@@ -7,6 +7,7 @@ using UnityEngine;
 public class Player : Character
 {
 	[SerializeField] private FloatingJoystick _joystick;
+	[SerializeField] private Transform playerCircle;
 	void Start()
     {
 		OnInit();
@@ -64,5 +65,9 @@ public class Player : Character
 		}
 	}
 
-
+	private void OnDrawGizmos()
+	{
+		//Gizmos.color = Color.yellow;
+		//Gizmos.DrawSphere(transform.position, 1);
+	}
 }
