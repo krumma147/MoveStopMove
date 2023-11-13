@@ -30,9 +30,10 @@ public class Player : Character
 			if (target != null)
 			{
 				//Debug.Log("Found target: " + target.name + ", with distance of:" + target.getDistanceToPlayer());
-				Attack(target); // add delay time by using Caroutine or something similar
+				//Attack(target); // add delay time by using Caroutine or something similar
 				enemies.Clear();
 				StartCoroutine(Attack(target));
+				target = null;
 			}
 		}
 	}

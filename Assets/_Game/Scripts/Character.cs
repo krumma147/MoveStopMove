@@ -41,6 +41,8 @@ public class Character : MonoBehaviour
 		Instantiate(weaponPrefabs, weaponBox);
 	}
 
+
+
 	public Enemy SelectEnemy()
 	{
 		float minDist = Mathf.Infinity;
@@ -92,7 +94,6 @@ public class Character : MonoBehaviour
 			anim.SetBool("IsAttack", true);
 			anim.SetBool("IsIdle", false);
 			//weaponPrefabs.SetActive(false); //Set ưeapon prefab to be false cause the bullets not visible
-			//enemy.OnDestroy();
 			ThrowWeapon(enemy);
 			yield return new WaitForSeconds(1.5f);
 			ResetAttack();
