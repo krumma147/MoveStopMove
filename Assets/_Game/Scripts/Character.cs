@@ -14,6 +14,9 @@ public class Character : MonoBehaviour
 	[SerializeField] private Transform weaponBox;
 	protected bool canAtack = false;
 
+	private float attackRange = 5.2f;
+	public bool isDead = false;
+
 	public enum PlayerState
 	{
 		Idle,
@@ -75,6 +78,7 @@ public class Character : MonoBehaviour
 			{
 				float dis = Vector3.Distance(transform.position, enemy.transform.position);
 				enemy.setDistanceToPlayer(dis);
+				enemy.EnableTargetCircle();
 				enemies.Add(enemy);
 			}
 		}
@@ -86,13 +90,15 @@ public class Character : MonoBehaviour
 		{
 			yield break;
 		}
-		if (!canAtack)
+		if (!canAtack && enemy.currentState != PlayerState.Death)
 		{
+			//AnimatorClipInfo[] atkAnim = anim.GetCurrentAnimatorClipInfo(0); // Add clip time info to know the duration of animation and CD between attacks
 			canAtack = true;
 			transform.LookAt(enemy.transform.position);
 			currentState = PlayerState.Attacking;
 			anim.SetBool("IsAttack", true);
 			anim.SetBool("IsIdle", false);
+			enemies.Clear();
 			//weaponPrefabs.SetActive(false); //Set ưeapon prefab to be false cause the bullets not visible
 			ThrowWeapon(enemy);
 			yield return new WaitForSeconds(1.5f);

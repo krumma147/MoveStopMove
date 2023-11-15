@@ -1,33 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class PatrolState : IState<PatrolState>
+public class PatrolState : IState<Enemy>
 {
-	public void OnEnter(PatrolState t)
+	float timer;
+	float randomTime;
+	public void OnEnter(Enemy enemy)
 	{
-		throw new System.NotImplementedException();
+		timer = 0;
+		randomTime = Random.Range(4f, 8f);
 	}
 
-	public void OnExecute(PatrolState t)
+	public void OnExecute(Enemy enemy)
 	{
-		throw new System.NotImplementedException();
+		timer += Time.deltaTime;
+		if (!enemy.isDead && timer < randomTime)
+		{
+			enemy.Moving();
+		}
+		else
+		{
+			enemy.ChangeState(new IdleState());
+		}
 	}
 
-	public void OnExit(PatrolState t)
+
+	public void OnExit(Enemy enemy)
 	{
-		throw new System.NotImplementedException();
+		
 	}
 
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

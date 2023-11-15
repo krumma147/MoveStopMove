@@ -27,13 +27,12 @@ public class Player : Character
 		if (enemies.Count > 0 && currentState != PlayerState.Moving)
 		{
 			Enemy target = SelectEnemy();
-			if (target != null)
+			if (target != null && !target.isDead)
 			{
 				//Debug.Log("Found target: " + target.name + ", with distance of:" + target.getDistanceToPlayer());
 				//Attack(target); // add delay time by using Caroutine or something similar
-				enemies.Clear();
 				StartCoroutine(Attack(target));
-				target = null;
+				enemies.Clear();
 			}
 		}
 	}
