@@ -19,6 +19,14 @@ public class PatrolState : IState<Enemy>
 		if (!enemy.isDead && timer < randomTime)
 		{
 			enemy.Moving();
+			enemy.DetectEnemy();
+		}
+		else if (enemy.enemies.Count > 0)
+		{
+			enemy.StopMoving();
+			//Debug.Log("Found enemy!");
+			//Debug.Log($"Enemy found: {enemy.enemies.Count}");
+			enemy.ChangeState(new AttackState());
 		}
 		else
 		{

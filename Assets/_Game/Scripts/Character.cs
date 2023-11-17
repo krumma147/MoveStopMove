@@ -9,13 +9,12 @@ public class Character : MonoBehaviour
 	protected Animator anim;
 	public List<Enemy> enemies;
 	protected PlayerState currentState;
-
 	[SerializeField] private GameObject weaponPrefabs;
 	[SerializeField] private Transform weaponBox;
-	protected bool canAtack = false;
-
+	
 	private float attackRange = 5.2f;
 	public bool isDead = false;
+	public bool canAtack = false;
 
 	public enum PlayerState
 	{
@@ -43,8 +42,6 @@ public class Character : MonoBehaviour
 		enemies = new List<Enemy>();
 		Instantiate(weaponPrefabs, weaponBox);
 	}
-
-
 
 	public Enemy SelectEnemy()
 	{
@@ -84,7 +81,7 @@ public class Character : MonoBehaviour
 		}
 	}
 	//Change this function to be normal and use invoke instead. Similar to the first game project, could add canAttack var
-	protected IEnumerator Attack(Enemy enemy)
+	public IEnumerator Attack(Enemy enemy)
 	{
 		if (currentState == PlayerState.Moving || currentState == PlayerState.Attacking)
 		{
@@ -98,13 +95,11 @@ public class Character : MonoBehaviour
 			currentState = PlayerState.Attacking;
 			anim.SetBool("IsAttack", true);
 			anim.SetBool("IsIdle", false);
-			enemies.Clear();
-			//weaponPrefabs.SetActive(false); //Set ưeapon prefab to be false cause the bullets not visible
+			//weaponPrefabs.SetActive(false); //Set weapon prefab to be false cause the bullets not visible
 			ThrowWeapon(enemy);
 			yield return new WaitForSeconds(1.5f);
 			ResetAttack();
 		}
-		
 	}
 
 	protected void ResetAttack()
