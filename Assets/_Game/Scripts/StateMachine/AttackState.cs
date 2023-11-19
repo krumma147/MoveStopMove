@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -16,11 +17,15 @@ public class AttackState : IState<Enemy>
 	{
 		if(enemySelected!= null)
 		{
-			if (enemySelected.isDead && enemy.canAtack)
+			if (!enemySelected.isDead && !enemy.canAtack)
 			{
 				//enemy.StartCoroutine(enemy.Attack(enemySelected));
-				Debug.Log($"Seleted Enemy: {enemySelected.name}");
-				//enemy.ChangeState(new PatrolState());
+				enemy.BotAttack(enemySelected);
+				if (enemySelected.isDead)
+				{
+					enemy.ChangeState(new PatrolState());
+				}
+
 			}
 		}
 		

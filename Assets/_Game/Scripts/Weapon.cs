@@ -7,7 +7,7 @@ public class Weapon : MonoBehaviour
 	private Rigidbody rb;
 	private bool isHit = false;
 	private Vector3 spawnLoc;
-	private float maxDis = 5.2f;
+	private float maxDis = 5f;
 	[SerializeField] private GameObject weaponObj;
 	public Vector3 target;
 	public float bulletSpeed = 10f;
@@ -24,7 +24,7 @@ public class Weapon : MonoBehaviour
 		Spinning();
 		transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * bulletSpeed);
 		float travelDis = Vector3.Distance(spawnLoc, transform.position);
-		if (isHit || travelDis >= maxDis)
+		if (travelDis >= maxDis || isHit )
 		{
 			OnDespawn();
 		}
@@ -44,7 +44,7 @@ public class Weapon : MonoBehaviour
 
 	public void Spinning()
 	{
-		transform.Rotate( new Vector3(0f, 0f, 100 * bulletSpeed * Time.deltaTime), Space.Self);
+		weaponObj.transform.Rotate( new Vector3(0f, 0f, 100 * bulletSpeed * Time.deltaTime), Space.Self);
 	}
 
 	private void OnTriggerEnter(Collider other)

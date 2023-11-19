@@ -56,7 +56,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6840038331493664023}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -977,6 +977,8 @@ MonoBehaviour:
   enemies: []
   weaponPrefabs: {fileID: 423340117753806475, guid: 1fac6f8ee7271184387ee96f5c3bfa28, type: 3}
   weaponBox: {fileID: 1082484431}
+  isDead: 0
+  canAtack: 0
   _joystick: {fileID: 0}
   playerCircle: {fileID: 4012948305013886214}
 --- !u!4 &7905579300344613561 stripped

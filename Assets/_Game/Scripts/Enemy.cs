@@ -48,6 +48,15 @@ public class Enemy : Character
 		}
 	}
 
+	public void BotAttack(Enemy enemy)
+	{
+		StopMoving();
+		Debug.Log("Attacking " +  enemy);// Co attack nhung attack anim ko chay.
+		anim.SetBool("IsAttack", true);
+		ThrowWeapon(enemy);
+		Invoke(nameof(ResetAttack), 1.5f);
+	}
+
 	public void Moving()
 	{
 		if (agent.remainingDistance <= agent.stoppingDistance) //done with path
