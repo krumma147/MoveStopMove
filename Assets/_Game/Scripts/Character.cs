@@ -5,6 +5,7 @@ using static Player;
 
 public class Character : MonoBehaviour
 {
+	//Try using queue for enemies, add indicator and UI
 	[SerializeField] protected float movementSpeed = 5f;
 	protected Animator anim;
 	public List<Enemy> enemies;
@@ -15,7 +16,7 @@ public class Character : MonoBehaviour
 	private float attackRange = 5.2f;
 	public bool isDead = false;
 	public bool canAtack = false;
-
+	public bool isMoving = false;	
 	public enum PlayerState
 	{
 		Idle,
@@ -43,11 +44,11 @@ public class Character : MonoBehaviour
 		Instantiate(weaponPrefabs, weaponBox);
 	}
 
-	public Enemy SelectEnemy()
+	public Character SelectEnemy()
 	{
 		float minDist = Mathf.Infinity;
-		Enemy enemy = null;
-		if (enemies.Count == 1)
+		Character enemy = null;
+		if (enemies.Count == 1 && enemies[0].getDistanceToPlayer() >= 5.2f)
 		{
 			enemy = enemies[0];
 		}
@@ -55,7 +56,7 @@ public class Character : MonoBehaviour
 		{
 			for (int i = 0; i < enemies.Count; i++)
 			{
-				if (enemies[i].getDistanceToPlayer() < minDist)
+				if (enemies[i].getDistanceToPlayer() < minDist && enemies[i].getDistanceToPlayer() <= 5.2f)
 				{
 					minDist = enemies[i].getDistanceToPlayer();
 					enemy = enemies[i];
@@ -71,7 +72,7 @@ public class Character : MonoBehaviour
 		for (int i = 0; i < colliders.Length; i++)
 		{
 			Enemy enemy = colliders[i].GetComponent<Enemy>();
-			if (enemy != null && colliders[i].CompareTag("Enemy") && enemy.currentState != PlayerState.Death)
+			if (enemy != null && colliders[i].CompareTag("Enemy") && enemy.currentState != PlayerState.Death && enemy.name != gameObject.name)
 			{
 				float dis = Vector3.Distance(transform.position, enemy.transform.position);
 				enemy.setDistanceToPlayer(dis);
@@ -81,7 +82,7 @@ public class Character : MonoBehaviour
 		}
 	}
 	//Change this function to be normal and use invoke instead. Similar to the first game project, could add canAttack var
-	public IEnumerator Attack(Enemy enemy)
+	public IEnumerator Attack(Character enemy)
 	{
 		if (currentState == PlayerState.Moving || currentState == PlayerState.Attacking)
 		{
@@ -95,7 +96,7 @@ public class Character : MonoBehaviour
 			currentState = PlayerState.Attacking;
 			anim.SetBool("IsAttack", true);
 			anim.SetBool("IsIdle", false);
-			//weaponPrefabs.SetActive(false); //Set weapon prefab to be false cause the bullets not visible
+			//Set weapon prefab to be false cause the bullets not visible
 			ThrowWeapon(enemy);
 			yield return new WaitForSeconds(1.5f);
 			ResetAttack();
@@ -109,7 +110,7 @@ public class Character : MonoBehaviour
 		canAtack = false;
 	}
 
-	public void ThrowWeapon(Enemy enemy)
+	public void ThrowWeapon(Character enemy)
 	{
 		GameObject obj = Instantiate(weaponPrefabs, weaponBox.position, weaponBox.rotation);
 		Weapon weap = obj.GetComponent<Weapon>();

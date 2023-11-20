@@ -26,7 +26,7 @@ public class Player : Character
 		DetectEnemy();
 		if (enemies.Count > 0 && currentState != PlayerState.Moving)
 		{
-			Enemy target = SelectEnemy();
+			Character target = SelectEnemy();
 			if (target != null && !target.isDead)
 			{
 				//Debug.Log("Found target: " + target.name + ", with distance of:" + target.getDistanceToPlayer());
@@ -41,6 +41,7 @@ public class Player : Character
 	{
 		if (Input.GetMouseButton(0))
 		{
+			isMoving = true;
 			Vector3 joyDir = new Vector3(_joystick.Direction.x, 0f, _joystick.Direction.y);
 			Vector3 nextDestination = transform.position + joyDir * Time.deltaTime * movementSpeed;
 			if (joyDir != Vector3.zero)
@@ -59,6 +60,7 @@ public class Player : Character
 		{
 			if (currentState != PlayerState.Idle)
 			{
+				isMoving = false;
 				currentState = PlayerState.Idle;
 				anim.SetBool("IsIdle", true);
 			}

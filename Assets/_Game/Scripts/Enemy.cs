@@ -10,10 +10,12 @@ public class Enemy : Character
 	private float distance;
 	private IState<Enemy> botState;
 	[SerializeField] private GameObject selectedCircle;
-
+	private Vector3 destination;
 	private NavMeshAgent agent;
 	public float range = 5.2f; //radius of sphere
 	public Transform centrePoint;
+	public Character botTarget;
+
 	void Start()
     {
 		agent = gameObject.GetComponent<NavMeshAgent>();
@@ -40,33 +42,46 @@ public class Enemy : Character
 		if (botState != null)
 		{
 			botState.OnExit(this);
+			//Debug.Log($"Exit this: {botState}");
 		}
 		botState = newState;
 		if (botState != null)
 		{
 			botState.OnEnter(this);
+			Debug.Log($"Enter this: {botState}");
 		}
 	}
 
-	public void BotAttack(Enemy enemy)
+	public void BotAttack(Character enemy)
 	{
-		StopMoving();
-		Debug.Log("Attacking " +  enemy);// Co attack nhung attack anim ko chay.
-		anim.SetBool("IsAttack", true);
-		ThrowWeapon(enemy);
-		Invoke(nameof(ResetAttack), 1.5f);
+		
+		if(enemy != null && !isMoving)
+		{
+			StopMoving();
+			transform.LookAt(enemy.transform.position);
+			anim.SetBool("IsAttack", true);
+			canAtack = true;
+			ThrowWeapon(enemy);
+			Invoke(nameof(ResetAttack), 1.5f);
+		}
+		if (!canAtack && !isMoving)
+		{
+			return;
+		}
 	}
 
 	public void Moving()
 	{
-		if (agent.remainingDistance <= agent.stoppingDistance) //done with path
+		if (isMoving) //done with path
 		{
 			Vector3 point;
 			if (RandomPoint(centrePoint.position, range, out point)) //pass in our centre point and radius of area
 			{
 				Debug.DrawRay(point, Vector3.up, UnityEngine.Color.blue, 1.0f); //so you can see with gizmos
-				anim.SetBool("IsIdle", false);
+				agent.isStopped = false;
 				agent.SetDestination(point);
+				anim.SetBool("IsIdle", false);
+				
 			}
 		}
 	}
@@ -100,6 +115,7 @@ public class Enemy : Character
 		agent.isStopped = true;
 		currentState = PlayerState.Idle;
 		anim.SetBool("IsIdle", true);
+		isMoving = false;
 		
 		//agent.SetDestination(transform.position);
 	}

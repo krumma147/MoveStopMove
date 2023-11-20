@@ -8,14 +8,16 @@ public class IdleState : IState<Enemy>
     float randomTime;
 	public void OnEnter(Enemy enemy)
 	{
+		Debug.Log($"{enemy.name} in Idle state!");
 		enemy.StopMoving();
 		timer = 0;
-		randomTime = Random.Range(2f, 4f);
+		randomTime = Random.Range(1f, 3f);
+		enemy.isMoving = false;
 	}
 
 	public void OnExecute(Enemy enemy)
 	{
-		timer += Time.deltaTime * 5;
+		timer += Time.deltaTime*5;
 		if (timer > randomTime)
 		{
 			enemy.ChangeState(new PatrolState());
