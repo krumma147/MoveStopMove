@@ -9,39 +9,20 @@ public class Character : MonoBehaviour
 	[SerializeField] protected float movementSpeed = 5f;
 	protected Animator anim;
 	public List<Enemy> enemies;
-	protected PlayerState currentState;
-	[SerializeField] private GameObject weaponPrefabs;
-	[SerializeField] private Transform weaponBox;
-	
+	[SerializeField] protected Transform weaponBox;
+	[SerializeField] LayerMask characterLayer;
+	protected WeaponItemData currentWeapon;
+
 	private float attackRange = 5.2f;
 	public bool isDead = false;
 	public bool canAtack = false;
 	public bool isMoving = false;	
-	public enum PlayerState
-	{
-		Idle,
-		Moving,
-		Attacking,
-		Death
-	}
-
+	
 	// Start is called before the first frame update
-	void Start()
-    {
-		OnInit();
-	}
-
-    // Update is called once per frame
-    void Update()
-    {
-		
-	}
 
 	virtual public void OnInit()
 	{
-		currentState = PlayerState.Idle;
 		enemies = new List<Enemy>();
-		Instantiate(weaponPrefabs, weaponBox);
 	}
 
 	public Character SelectEnemy()
@@ -68,11 +49,11 @@ public class Character : MonoBehaviour
 
 	public void DetectEnemy()
 	{
-		Collider[] colliders = Physics.OverlapSphere(transform.position, 5f);
+		Collider[] colliders = Physics.OverlapSphere(transform.position, 5f, characterLayer);
 		for (int i = 0; i < colliders.Length; i++)
 		{
 			Enemy enemy = colliders[i].GetComponent<Enemy>();
-			if (enemy != null && colliders[i].CompareTag("Enemy") && enemy.currentState != PlayerState.Death && enemy.name != gameObject.name)
+			if (enemy != null && colliders[i].CompareTag("Enemy") && !enemy.isDead && enemy.name != gameObject.name)
 			{
 				float dis = Vector3.Distance(transform.position, enemy.transform.position);
 				enemy.setDistanceToPlayer(dis);
@@ -84,16 +65,15 @@ public class Character : MonoBehaviour
 	//Change this function to be normal and use invoke instead. Similar to the first game project, could add canAttack var
 	public IEnumerator Attack(Character enemy)
 	{
-		if (currentState == PlayerState.Moving || currentState == PlayerState.Attacking)
+		if (isMoving)
 		{
 			yield break;
 		}
-		if (!canAtack && enemy.currentState != PlayerState.Death)
+		if (!canAtack && enemy.isDead)
 		{
 			//AnimatorClipInfo[] atkAnim = anim.GetCurrentAnimatorClipInfo(0); // Add clip time info to know the duration of animation and CD between attacks
 			canAtack = true;
 			transform.LookAt(enemy.transform.position);
-			currentState = PlayerState.Attacking;
 			anim.SetBool("IsAttack", true);
 			anim.SetBool("IsIdle", false);
 			//Set weapon prefab to be false cause the bullets not visible
@@ -103,17 +83,42 @@ public class Character : MonoBehaviour
 		}
 	}
 
-	protected void ResetAttack()
+	protected virtual void ResetAttack()
 	{
-		currentState = PlayerState.Idle;
 		anim.SetBool("IsAttack", false);
 		canAtack = false;
 	}
 
 	public void ThrowWeapon(Character enemy)
 	{
-		GameObject obj = Instantiate(weaponPrefabs, weaponBox.position, weaponBox.rotation);
+		GameObject obj = Instantiate(currentWeapon.bullet, weaponBox.position, weaponBox.rotation);
 		Weapon weap = obj.GetComponent<Weapon>();
+		weap.OnInit();
 		weap.target = enemy.transform.position;
 	}
+
+	
+	// add these 
+	//Hat hat;
+	//pants
+	//Wings
+
+	public void ChangeWeapon(WeaponType weapon)
+	{
+		//Destroy old weap and create new one
+		currentWeapon = DataManager.Instance.GetWeaponData(weapon);
+	} // convert int type to enum type.
+
+
+	public virtual void OnDeath() // Tach ra lam 2 ham, dung pooling de despawn enemy va
+	{
+		isDead = true;
+		anim.SetBool("IsDead", true);
+	}
+
+	public virtual void OnDespawn()
+	{
+
+	}
+
 }

@@ -8,6 +8,7 @@ public class Player : Character
 {
 	[SerializeField] private FloatingJoystick _joystick;
 	[SerializeField] private Transform playerCircle;
+	protected PlayerState currentState;
 	void Start()
     {
 		OnInit();
@@ -15,8 +16,16 @@ public class Player : Character
 
 	override public void OnInit()
 	{
+		if (currentWeapon == null)
+		{
+			currentWeapon = DataManager.Instance.GetWeaponData(WeaponType.HAMMER);
+			Debug.Log(DataManager.Instance.GetWeaponData(WeaponType.HAMMER));
+		}
+		Debug.Log(currentWeapon);
 		anim = GetComponent<Animator>();
 		CameraManager.Instance.SetTarget(gameObject.transform);
+		currentState = PlayerState.Idle;
+		Instantiate(currentWeapon.weapon, weaponBox);
 	}
 
     // Update is called once per frame
@@ -32,6 +41,7 @@ public class Player : Character
 				//Debug.Log("Found target: " + target.name + ", with distance of:" + target.getDistanceToPlayer());
 				//Attack(target); // add delay time by using Caroutine or something similar
 				StartCoroutine(Attack(target));
+				currentState = PlayerState.Attacking;
 				enemies.Clear();
 			}
 		}
@@ -65,6 +75,14 @@ public class Player : Character
 				anim.SetBool("IsIdle", true);
 			}
 		}
+	}
+
+	
+
+	protected override void ResetAttack()
+	{
+		base.ResetAttack();
+		currentState = PlayerState.Idle;
 	}
 
 	private void OnDrawGizmos()

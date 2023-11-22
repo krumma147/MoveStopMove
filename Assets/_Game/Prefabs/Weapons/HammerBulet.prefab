@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7085651736394659491}
   - component: {fileID: 9016822555770889307}
   m_Layer: 0
-  m_Name: Weapon
+  m_Name: HammerBulet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

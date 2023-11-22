@@ -18,10 +18,7 @@ public class Enemy : Character
 
 	void Start()
     {
-		agent = gameObject.GetComponent<NavMeshAgent>();
-		anim = GetComponent<Animator>();
-		DisableTargetCircle();
-		ChangeState(new PatrolState());
+		
 	}
 
     // Update is called once per frame
@@ -35,6 +32,17 @@ public class Enemy : Character
 		{
 			DisableTargetCircle();
 		}
+	}
+
+	public void OnInit()
+	{
+		agent = gameObject.GetComponent<NavMeshAgent>();
+		anim = GetComponent<Animator>();
+		DisableTargetCircle();
+		ChangeState(new PatrolState());
+
+		ChangeWeapon((WeaponType)3);
+		Instantiate(currentWeapon.weapon, weaponBox);
 	}
 
 	public void ChangeState(IState<Enemy> newState)
@@ -86,7 +94,7 @@ public class Enemy : Character
 		}
 	}
 
-	public bool RandomPoint(Vector3 center, float range, out Vector3 result)
+	public bool RandomPoint(Vector3 center, float range, out Vector3 result) // Random giua viec di chuyen hoac tan cong.
 	{
 		Vector3 randomPoint = center + Random.insideUnitSphere * range;
 		NavMeshHit hit;
@@ -113,10 +121,8 @@ public class Enemy : Character
 	public void StopMoving()
 	{
 		agent.isStopped = true;
-		currentState = PlayerState.Idle;
 		anim.SetBool("IsIdle", true);
 		isMoving = false;
-		
 		//agent.SetDestination(transform.position);
 	}
 
@@ -130,11 +136,9 @@ public class Enemy : Character
         return distance;
     }
 
-    public void OnDeath()
+    override public void OnDeath() // Tach ra lam 2 ham, dung pooling de despawn enemy va
 	{
-		isDead = true;
-		currentState = PlayerState.Death;
-		anim.SetBool("IsDead", true);
+		base.OnDeath();
 		selectedCircle.SetActive(false);
 		ChangeState(new IdleState());
 		Invoke(nameof(OnDestroy), 1.5f);

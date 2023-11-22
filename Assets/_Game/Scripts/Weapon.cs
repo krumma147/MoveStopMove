@@ -11,23 +11,13 @@ public class Weapon : MonoBehaviour
 	[SerializeField] private GameObject weaponObj;
 	public Vector3 target;
 	public float bulletSpeed = 10f;
-	
-	
-	void Start()
-	{
-		OnInit();
-	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		Spinning();
 		transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * bulletSpeed);
-		float travelDis = Vector3.Distance(spawnLoc, transform.position);
-		if (travelDis >= maxDis || isHit )
-		{
-			OnDespawn();
-		}
+		Invoke(nameof(OnDespawn), 2f);
 	}
 
 	public void OnInit()
@@ -35,11 +25,6 @@ public class Weapon : MonoBehaviour
 		rb = weaponObj.GetComponent<Rigidbody>();
 		transform.Rotate(90.0f, 0.0f, 0.0f);
 		spawnLoc = transform.position;
-	}
-
-	public void OnDespawn()
-	{
-		Destroy(gameObject);
 	}
 
 	public void Spinning()
@@ -54,6 +39,11 @@ public class Weapon : MonoBehaviour
 			Enemy enemy = other.GetComponent<Enemy>();
 			isHit = true;
 			enemy.OnDeath();
+			OnDespawn();
 		}
+	}
+	public void OnDespawn() // Despawn sau 1 khoang thoi gian va khi va cham vs dich.....
+	{
+		Destroy(gameObject);
 	}
 }
