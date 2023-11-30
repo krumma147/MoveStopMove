@@ -1,49 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-	private Rigidbody rb;
-	private bool isHit = false;
-	private Vector3 spawnLoc;
-	private float maxDis = 5f;
-	[SerializeField] private GameObject weaponObj;
-	public Vector3 target;
-	public float bulletSpeed = 10f;
-
-	// Update is called once per frame
-	void Update()
-	{
-		Spinning();
-		transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * bulletSpeed);
-		Invoke(nameof(OnDespawn), 2f);
-	}
+	protected Rigidbody rb;
+	[SerializeField] protected GameObject weaponObj;
 
 	public void OnInit()
 	{
 		rb = weaponObj.GetComponent<Rigidbody>();
 		transform.Rotate(90.0f, 0.0f, 0.0f);
-		spawnLoc = transform.position;
 	}
 
-	public void Spinning()
+	public void ChangeColor()
 	{
-		weaponObj.transform.Rotate( new Vector3(0f, 0f, 100 * bulletSpeed * Time.deltaTime), Space.Self);
+		List<Material> myMaterials = weaponObj.GetComponent<Renderer>().materials.ToList();
+		myMaterials[0].color = GetColor(PartColor.BLUE);
+		myMaterials[1].color = GetColor(PartColor.GRAY);
 	}
 
-	private void OnTriggerEnter(Collider other)
-	{
-		if (other.CompareTag("Enemy"))
+	public Color GetColor(PartColor color) {
+		Color result = new Color(0f, 0f, 0f, 0f);
+		switch (color)
 		{
-			Enemy enemy = other.GetComponent<Enemy>();
-			isHit = true;
-			enemy.OnDeath();
-			OnDespawn();
+			case PartColor.RED: 
+				result = Color.red;
+				break;
+			case PartColor.GREEN: 
+				result = Color.green;
+				break;
+			case PartColor.BLUE:
+				result = Color.blue;
+				break;
+			// PartColor.BROWN: return Color.brown;
+			case PartColor.BLACK:
+				result = Color.black;
+				break;
+			case PartColor.GRAY:
+				result = Color.gray;
+				break;
+			default:
+				break;
 		}
+		return result;
 	}
-	public void OnDespawn() // Despawn sau 1 khoang thoi gian va khi va cham vs dich.....
-	{
-		Destroy(gameObject);
-	}
+
 }

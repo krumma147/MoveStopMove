@@ -18,7 +18,7 @@ public class Enemy : Character
 
 	void Start()
     {
-		
+		OnInit();
 	}
 
     // Update is called once per frame
@@ -34,15 +34,15 @@ public class Enemy : Character
 		}
 	}
 
-	public void OnInit()
+	public override void OnInit()
 	{
+		base.OnInit();	
 		agent = gameObject.GetComponent<NavMeshAgent>();
-		anim = GetComponent<Animator>();
 		DisableTargetCircle();
 		ChangeState(new PatrolState());
-
-		ChangeWeapon((WeaponType)3);
-		Instantiate(currentWeapon.weapon, weaponBox);
+		ChangeWeapon((WeaponType) 2);
+		currentWeapon.ChangeColor();
+		//Instantiate(currentWeapon.weapon, weaponBox);
 	}
 
 	public void ChangeState(IState<Enemy> newState)
@@ -50,7 +50,6 @@ public class Enemy : Character
 		if (botState != null)
 		{
 			botState.OnExit(this);
-			//Debug.Log($"Exit this: {botState}");
 		}
 		botState = newState;
 		if (botState != null)
@@ -80,7 +79,7 @@ public class Enemy : Character
 
 	public void Moving()
 	{
-		if (isMoving) //done with path
+		if (isMoving)
 		{
 			Vector3 point;
 			if (RandomPoint(centrePoint.position, range, out point)) //pass in our centre point and radius of area

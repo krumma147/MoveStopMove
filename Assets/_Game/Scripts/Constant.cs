@@ -31,3 +31,13 @@ public enum WeaponType
 	UZI = 10,
 	Z = 11,
 }
+
+public enum PartColor
+{
+	RED = 0,
+	BLUE = 1,
+	BROWN = 2,
+	BLACK = 3,
+	GREEN = 4,
+	GRAY = 5,
+}

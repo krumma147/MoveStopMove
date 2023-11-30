@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: WeaponDatas
   m_EditorClassIdentifier: 
   weaponList:
-  - weapon: {fileID: 423340117753806475, guid: 3e6eb4e13de21514e9325c25431c5094, type: 3}
-    bullet: {fileID: 423340117753806475, guid: 1fac6f8ee7271184387ee96f5c3bfa28, type: 3}
+  - weapon: {fileID: 6586027758874596126, guid: 3e6eb4e13de21514e9325c25431c5094, type: 3}
+    bullet: {fileID: -3160871465573057393, guid: 1fac6f8ee7271184387ee96f5c3bfa28, type: 3}
     weaponType: 0
-  - weapon: {fileID: 2765139241917914671, guid: aff55a0f28ec7674f8a5dc1c5bc9d5d3, type: 3}
-    bullet: {fileID: 2765139241917914671, guid: fd57c476358b14242a09dbbe9f496516, type: 3}
+  - weapon: {fileID: 8225489173682292446, guid: 30da5280bda4dd64d8be243dab5e9b87, type: 3}
+    bullet: {fileID: 6630481833814419290, guid: 28a54d24413a8e348842ac3d64331dc0, type: 3}
     weaponType: 1
-  - weapon: {fileID: 5764467423157317245, guid: a636ff05ee44dfd42923976defb2ded4, type: 3}
-    bullet: {fileID: 5764467423157317245, guid: dbd0814f92bd8bd48b729b3dcd4ea74b, type: 3}
+  - weapon: {fileID: 5654502806265990589, guid: a636ff05ee44dfd42923976defb2ded4, type: 3}
+    bullet: {fileID: 5904656785646662100, guid: 357e3411eb2482944b1b0c3237f75d42, type: 3}
     weaponType: 2
-  - weapon: {fileID: 5920703685017571877, guid: d9a786b830e9dbe4585e5cf7b6373e26, type: 3}
-    bullet: {fileID: 5920703685017571877, guid: 19e31a41804aa89498eaac4c9ea42661, type: 3}
+  - weapon: {fileID: 6420426489432287918, guid: d9a786b830e9dbe4585e5cf7b6373e26, type: 3}
+    bullet: {fileID: 4373657131717663723, guid: d0ed5dd76f43bdd4ab1d82b8c8ebc9ef, type: 3}
     weaponType: 4

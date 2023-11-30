@@ -11,21 +11,19 @@ public class Player : Character
 	protected PlayerState currentState;
 	void Start()
     {
-		OnInit();
+		this.OnInit();
 	}
 
 	override public void OnInit()
 	{
+		base.OnInit();
 		if (currentWeapon == null)
 		{
-			currentWeapon = DataManager.Instance.GetWeaponData(WeaponType.HAMMER);
-			Debug.Log(DataManager.Instance.GetWeaponData(WeaponType.HAMMER));
+			ChangeWeapon((WeaponType) 2);
+			currentWeapon.ChangeColor();
 		}
-		Debug.Log(currentWeapon);
-		anim = GetComponent<Animator>();
 		CameraManager.Instance.SetTarget(gameObject.transform);
 		currentState = PlayerState.Idle;
-		Instantiate(currentWeapon.weapon, weaponBox);
 	}
 
     // Update is called once per frame
@@ -39,7 +37,6 @@ public class Player : Character
 			if (target != null && !target.isDead)
 			{
 				//Debug.Log("Found target: " + target.name + ", with distance of:" + target.getDistanceToPlayer());
-				//Attack(target); // add delay time by using Caroutine or something similar
 				StartCoroutine(Attack(target));
 				currentState = PlayerState.Attacking;
 				enemies.Clear();

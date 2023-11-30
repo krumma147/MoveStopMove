@@ -264,9 +264,17 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7514850651772749985, guid: b4365d8d015ad5c43864923c18714953, type: 3}
+      propertyPath: weaponList
+      value: 
+      objectReference: {fileID: 11400000, guid: 247865a864f636d43b849086c3a2008c, type: 2}
+    - target: {fileID: 7514850651772749985, guid: b4365d8d015ad5c43864923c18714953, type: 3}
       propertyPath: centrePoint
       value: 
       objectReference: {fileID: 833958642}
+    - target: {fileID: 7514850651772749985, guid: b4365d8d015ad5c43864923c18714953, type: 3}
+      propertyPath: characterLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4365d8d015ad5c43864923c18714953, type: 3}
 --- !u!1001 &241160310
@@ -1322,6 +1330,14 @@ PrefabInstance:
       propertyPath: _joystick
       value: 
       objectReference: {fileID: 1444805834}
+    - target: {fileID: 126872196, guid: a71a54a3ce47ad941b6a5d31b4af57bc, type: 3}
+      propertyPath: weaponList
+      value: 
+      objectReference: {fileID: 11400000, guid: 247865a864f636d43b849086c3a2008c, type: 2}
+    - target: {fileID: 126872196, guid: a71a54a3ce47ad941b6a5d31b4af57bc, type: 3}
+      propertyPath: characterLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 4012948305013886214, guid: a71a54a3ce47ad941b6a5d31b4af57bc, type: 3}
       propertyPath: m_LocalScale.x
       value: 5

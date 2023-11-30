@@ -9,14 +9,28 @@ public class WeaponList : ScriptableObject
 {
    public List<WeaponItemData> weaponList;
     // Start is called before the first frame update
+
+	public WeaponItemData GetWeaponData(WeaponType weaponType)
+	{
+		WeaponItemData weaponItemData = null;
+		foreach(WeaponItemData weapon in weaponList)
+		{
+			if(weapon.weaponType == weaponType)
+			{
+				weaponItemData = weapon;
+			}
+		}
+		return weaponItemData;
+	}
 }
 
 [Serializable]
 public class WeaponItemData
 {
 	// Start is called before the first frame update
-	public GameObject weapon;
-	public GameObject bullet;
+	public Weapon weapon;
+	public Bullet bullet;
 	public WeaponType weaponType;
 
+	
 }

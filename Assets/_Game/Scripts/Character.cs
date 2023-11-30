@@ -11,7 +11,10 @@ public class Character : MonoBehaviour
 	public List<Enemy> enemies;
 	[SerializeField] protected Transform weaponBox;
 	[SerializeField] LayerMask characterLayer;
-	protected WeaponItemData currentWeapon;
+	[SerializeField] protected WeaponList weaponList;
+	protected WeaponItemData weaponData;
+	protected Weapon currentWeapon;
+	
 
 	private float attackRange = 5.2f;
 	public bool isDead = false;
@@ -23,13 +26,14 @@ public class Character : MonoBehaviour
 	virtual public void OnInit()
 	{
 		enemies = new List<Enemy>();
+		anim = GetComponent<Animator>();
 	}
 
 	public Character SelectEnemy()
 	{
 		float minDist = Mathf.Infinity;
 		Character enemy = null;
-		if (enemies.Count == 1 && enemies[0].getDistanceToPlayer() >= 5.2f)
+		if (enemies.Count == 1 && enemies[0].getDistanceToPlayer() >= attackRange)
 		{
 			enemy = enemies[0];
 		}
@@ -37,7 +41,7 @@ public class Character : MonoBehaviour
 		{
 			for (int i = 0; i < enemies.Count; i++)
 			{
-				if (enemies[i].getDistanceToPlayer() < minDist && enemies[i].getDistanceToPlayer() <= 5.2f)
+				if (enemies[i].getDistanceToPlayer() < minDist && enemies[i].getDistanceToPlayer() <= attackRange)
 				{
 					minDist = enemies[i].getDistanceToPlayer();
 					enemy = enemies[i];
@@ -91,14 +95,13 @@ public class Character : MonoBehaviour
 
 	public void ThrowWeapon(Character enemy)
 	{
-		GameObject obj = Instantiate(currentWeapon.bullet, weaponBox.position, weaponBox.rotation);
-		Weapon weap = obj.GetComponent<Weapon>();
-		weap.OnInit();
-		weap.target = enemy.transform.position;
+		Bullet obj = Instantiate(weaponData.bullet, weaponBox.position, weaponBox.rotation);
+		obj.OnInit();
+		obj.target = enemy.transform.position;
 	}
 
 	
-	// add these 
+	// add these later on
 	//Hat hat;
 	//pants
 	//Wings
@@ -106,7 +109,12 @@ public class Character : MonoBehaviour
 	public void ChangeWeapon(WeaponType weapon)
 	{
 		//Destroy old weap and create new one
-		currentWeapon = DataManager.Instance.GetWeaponData(weapon);
+/*		currentWeapon = DataManager.Instance.GetWeaponData(weapon); //*/
+		if(currentWeapon != null)
+		{
+			Destroy(currentWeapon.gameObject);
+		}
+		currentWeapon = Instantiate(weaponList.GetWeaponData(weapon).weapon, weaponBox);
 	} // convert int type to enum type.
 
 
