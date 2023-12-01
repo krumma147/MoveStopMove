@@ -8,7 +8,7 @@ public class IdleState : IState<Enemy>
     float randomTime;
 	public void OnEnter(Enemy enemy)
 	{
-		Debug.Log($"{enemy.name} in Idle state!");
+		//Debug.Log($"{enemy.name} in Idle state!");
 		enemy.StopMoving();
 		timer = 0;
 		randomTime = Random.Range(1f, 3f);

@@ -29,18 +29,12 @@ public class Player : Character
     // Update is called once per frame
     void Update()
     {
-        Moving();
-		DetectEnemy();
-		if (enemies.Count > 0 && currentState != PlayerState.Moving)
+		Character target = SelectTarget();
+		Moving();
+		if (!isMoving && target != null && !target.isDead)
 		{
-			Character target = SelectEnemy();
-			if (target != null && !target.isDead)
-			{
-				//Debug.Log("Found target: " + target.name + ", with distance of:" + target.getDistanceToPlayer());
-				StartCoroutine(Attack(target));
-				currentState = PlayerState.Attacking;
-				enemies.Clear();
-			}
+			Attack(target);
+			currentState = PlayerState.Attacking;
 		}
 	}
 
@@ -74,17 +68,4 @@ public class Player : Character
 		}
 	}
 
-	
-
-	protected override void ResetAttack()
-	{
-		base.ResetAttack();
-		currentState = PlayerState.Idle;
-	}
-
-	private void OnDrawGizmos()
-	{
-		//Gizmos.color = Color.yellow;
-		//Gizmos.DrawSphere(transform.position, 1);
-	}
 }

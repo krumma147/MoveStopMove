@@ -22,32 +22,24 @@ public class PatrolState : IState<Enemy>
         {
 			return;
         }
-		enemy.DetectEnemy();
 		timer += Time.deltaTime*5;
-		if (enemy.enemies.Count > 0)
+		if (enemy.detectedEnemies.Count > 0)
 		{
-			enemy.botTarget = enemy.SelectEnemy();
-			Enemy target = (Enemy)enemy.botTarget;
-			if (enemy.botTarget != null && target.getDistanceToPlayer() <= 5.0f)
-			{
-				enemy.StopMoving();
-				enemy.ChangeState(new AttackState());
-				return;
-			}
+			enemy.StopMoving();
+			enemy.ChangeState(new AttackState());
 		}
-		if (timer < randomTime)
+		if (timer > randomTime)
 		{
-			enemy.Moving();
-		}
-		else
-		{
+			enemy.StopMoving();
 			enemy.ChangeState(new IdleState());
 		}
+		enemy.Moving();
 	}
 
 
 	public void OnExit(Enemy enemy)
 	{
+
 	}
 
 }

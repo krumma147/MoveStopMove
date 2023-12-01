@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bullet : Weapon
 {
-	private Vector3 spawnLoc;
 	public Vector3 target;
 	public float bulletSpeed = 10f;
 
@@ -16,13 +15,6 @@ public class Bullet : Weapon
 		Invoke(nameof(OnDespawn), 2f);
 	}
 
-	public void OnInit()
-	{
-		rb = weaponObj.GetComponent<Rigidbody>();
-		transform.Rotate(90.0f, 0.0f, 0.0f);
-		spawnLoc = transform.position;
-	}
-
 	public void Spinning()
 	{
 		weaponObj.transform.Rotate(new Vector3(0f, 0f, 100 * bulletSpeed * Time.deltaTime), Space.Self);
@@ -30,11 +22,11 @@ public class Bullet : Weapon
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.CompareTag("Enemy"))
+		Character victim = other.GetComponent<Character>();
+
+		if (victim != null)
 		{
-			Enemy enemy = other.GetComponent<Enemy>();
-			//isHit = true;
-			enemy.OnDeath();
+			victim.OnDeath();
 			OnDespawn();
 		}
 	}

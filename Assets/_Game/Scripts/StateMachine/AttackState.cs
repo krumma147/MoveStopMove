@@ -14,19 +14,25 @@ public class AttackState : IState<Enemy>
 
 	public void OnExecute(Enemy enemy)
 	{
-		if (enemy.botTarget.isDead)
+		if (enemy.isDead)
 		{
-			enemy.ChangeState(new PatrolState());
-		}else
-		{
-			enemy.BotAttack(enemy.botTarget);
+			return;
 		}
-
+		Character target = enemy.SelectTarget();
+		if (target != null)
+		{
+			enemy.Attack(target);
+			//Debug.Log($"{enemy.name} attack {target.name}");
+		}
+		else
+		{
+			enemy.ChangeState(new IdleState());
+		}
 	}
 
 	public void OnExit(Enemy enemy)
 	{
-		enemy.botTarget = null;
+
 	}
 
 }

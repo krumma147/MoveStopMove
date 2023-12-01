@@ -14,7 +14,6 @@ public class Enemy : Character
 	private NavMeshAgent agent;
 	public float range = 5.2f; //radius of sphere
 	public Transform centrePoint;
-	public Character botTarget;
 
 	void Start()
     {
@@ -42,7 +41,6 @@ public class Enemy : Character
 		ChangeState(new PatrolState());
 		ChangeWeapon((WeaponType) 2);
 		currentWeapon.ChangeColor();
-		//Instantiate(currentWeapon.weapon, weaponBox);
 	}
 
 	public void ChangeState(IState<Enemy> newState)
@@ -55,25 +53,6 @@ public class Enemy : Character
 		if (botState != null)
 		{
 			botState.OnEnter(this);
-			Debug.Log($"Enter this: {botState}");
-		}
-	}
-
-	public void BotAttack(Character enemy)
-	{
-		
-		if(enemy != null && !isMoving)
-		{
-			StopMoving();
-			transform.LookAt(enemy.transform.position);
-			anim.SetBool("IsAttack", true);
-			canAtack = true;
-			ThrowWeapon(enemy);
-			Invoke(nameof(ResetAttack), 1.5f);
-		}
-		if (!canAtack && !isMoving)
-		{
-			return;
 		}
 	}
 
@@ -137,14 +116,8 @@ public class Enemy : Character
 
     override public void OnDeath() // Tach ra lam 2 ham, dung pooling de despawn enemy va
 	{
-		base.OnDeath();
 		selectedCircle.SetActive(false);
 		ChangeState(new IdleState());
-		Invoke(nameof(OnDestroy), 1.5f);
-	}
-
-	public void OnDestroy()
-	{
-		gameObject.SetActive(false);
+		base.OnDeath();
 	}
 }

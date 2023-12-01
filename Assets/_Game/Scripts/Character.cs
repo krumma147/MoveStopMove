@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Player;
 
@@ -8,96 +9,75 @@ public class Character : MonoBehaviour
 	//Try using queue for enemies, add indicator and UI
 	[SerializeField] protected float movementSpeed = 5f;
 	protected Animator anim;
-	public List<Enemy> enemies;
+	public List<Character> detectedEnemies;
 	[SerializeField] protected Transform weaponBox;
 	[SerializeField] LayerMask characterLayer;
 	[SerializeField] protected WeaponList weaponList;
 	protected WeaponItemData weaponData;
 	protected Weapon currentWeapon;
-	
 
-	private float attackRange = 5.2f;
+	public float attackRange = 5.2f;
+	public float attackCD = 1.5f;
 	public bool isDead = false;
-	public bool canAtack = false;
+	public bool isAtack = false;
 	public bool isMoving = false;	
 	
 	// Start is called before the first frame update
 
 	virtual public void OnInit()
 	{
-		enemies = new List<Enemy>();
+		detectedEnemies = new List<Character>();
 		anim = GetComponent<Animator>();
 	}
 
-	public Character SelectEnemy()
+	public Character SelectTarget()
 	{
 		float minDist = Mathf.Infinity;
-		Character enemy = null;
-		if (enemies.Count == 1 && enemies[0].getDistanceToPlayer() >= attackRange)
+		Character target = null;
+		for (int i = 0; i < detectedEnemies.Count; i++)
 		{
-			enemy = enemies[0];
-		}
-		else
-		{
-			for (int i = 0; i < enemies.Count; i++)
+			Character currentEnemy = detectedEnemies[i];
+			float enemyDistance = Vector3.Distance(gameObject.transform.position, currentEnemy.transform.position);
+			if (enemyDistance < minDist)
 			{
-				if (enemies[i].getDistanceToPlayer() < minDist && enemies[i].getDistanceToPlayer() <= attackRange)
-				{
-					minDist = enemies[i].getDistanceToPlayer();
-					enemy = enemies[i];
-				}
+				minDist = enemyDistance;
+				target = currentEnemy;
 			}
 		}
-		return enemy;
+		return target;
 	}
 
-	public void DetectEnemy()
-	{
-		Collider[] colliders = Physics.OverlapSphere(transform.position, 5f, characterLayer);
-		for (int i = 0; i < colliders.Length; i++)
-		{
-			Enemy enemy = colliders[i].GetComponent<Enemy>();
-			if (enemy != null && colliders[i].CompareTag("Enemy") && !enemy.isDead && enemy.name != gameObject.name)
-			{
-				float dis = Vector3.Distance(transform.position, enemy.transform.position);
-				enemy.setDistanceToPlayer(dis);
-				enemy.EnableTargetCircle();
-				enemies.Add(enemy);
-			}
-		}
-	}
 	//Change this function to be normal and use invoke instead. Similar to the first game project, could add canAttack var
-	public IEnumerator Attack(Character enemy)
+	public virtual void Attack(Character target)
 	{
-		if (isMoving)
+
+		if (target != null && !isMoving && !isAtack)
 		{
-			yield break;
-		}
-		if (!canAtack && enemy.isDead)
-		{
-			//AnimatorClipInfo[] atkAnim = anim.GetCurrentAnimatorClipInfo(0); // Add clip time info to know the duration of animation and CD between attacks
-			canAtack = true;
-			transform.LookAt(enemy.transform.position);
+			transform.LookAt(target.transform.position);
 			anim.SetBool("IsAttack", true);
-			anim.SetBool("IsIdle", false);
-			//Set weapon prefab to be false cause the bullets not visible
-			ThrowWeapon(enemy);
-			yield return new WaitForSeconds(1.5f);
-			ResetAttack();
+			isAtack = true;
+			ThrowWeapon(target);
+			Invoke(nameof(ResetAttack), attackCD);
+		}
+		if (isAtack && isMoving)
+		{
+			return;
 		}
 	}
 
 	protected virtual void ResetAttack()
 	{
 		anim.SetBool("IsAttack", false);
-		canAtack = false;
+		isAtack = false;
 	}
 
-	public void ThrowWeapon(Character enemy)
+	public void ThrowWeapon(Character target)
 	{
+		//Bullet have problem!
 		Bullet obj = Instantiate(weaponData.bullet, weaponBox.position, weaponBox.rotation);
+		obj.ChangeColor();
+		obj.target = target.transform.position;
 		obj.OnInit();
-		obj.target = enemy.transform.position;
 	}
 
 	
@@ -109,24 +89,36 @@ public class Character : MonoBehaviour
 	public void ChangeWeapon(WeaponType weapon)
 	{
 		//Destroy old weap and create new one
-/*		currentWeapon = DataManager.Instance.GetWeaponData(weapon); //*/
-		if(currentWeapon != null)
+		if (weaponData != null)
 		{
+			weaponData = null;
 			Destroy(currentWeapon.gameObject);
 		}
-		currentWeapon = Instantiate(weaponList.GetWeaponData(weapon).weapon, weaponBox);
-	} // convert int type to enum type.
+		weaponData = weaponList.GetWeaponData(weapon);
+		currentWeapon = Instantiate(weaponData.weapon, weaponBox);
 
+	}
+
+	public void AddEnemy(Character chars)
+	{
+		detectedEnemies.Add(chars);
+	}
+
+	public void RemoveEnemy(Character chars)
+	{
+		detectedEnemies.RemoveAt(detectedEnemies.IndexOf(chars));
+	}
 
 	public virtual void OnDeath() // Tach ra lam 2 ham, dung pooling de despawn enemy va
 	{
 		isDead = true;
 		anim.SetBool("IsDead", true);
+		Invoke(nameof(OnDespawn), 1.5f);
 	}
 
 	public virtual void OnDespawn()
 	{
-
+		gameObject.SetActive(false);
 	}
 
 }
