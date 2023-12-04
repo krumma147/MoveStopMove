@@ -31,6 +31,10 @@ public class Enemy : Character
 		{
 			DisableTargetCircle();
 		}
+		if(detectedEnemies.Count > 0)
+		{
+			Debug.Log(detectedEnemies[0]);
+		}
 	}
 
 	public override void OnInit()

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : Weapon
 {
+	public Character shooter;
 	public Vector3 target;
 	public float bulletSpeed = 10f;
 
@@ -24,7 +25,7 @@ public class Bullet : Weapon
 	{
 		Character victim = other.GetComponent<Character>();
 
-		if (victim != null)
+		if (victim != null && victim != shooter)
 		{
 			victim.OnDeath();
 			OnDespawn();

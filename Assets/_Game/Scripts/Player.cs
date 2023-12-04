@@ -40,6 +40,10 @@ public class Player : Character
 
 	public void Moving()	
 	{
+		if(isDead)
+		{
+			return;
+		}
 		if (Input.GetMouseButton(0))
 		{
 			isMoving = true;

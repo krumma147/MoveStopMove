@@ -69,6 +69,7 @@ public class Character : MonoBehaviour
 	{
 		anim.SetBool("IsAttack", false);
 		isAtack = false;
+		detectedEnemies.Clear();
 	}
 
 	public void ThrowWeapon(Character target)
@@ -77,6 +78,7 @@ public class Character : MonoBehaviour
 		Bullet obj = Instantiate(weaponData.bullet, weaponBox.position, weaponBox.rotation);
 		obj.ChangeColor();
 		obj.target = target.transform.position;
+		obj.shooter = this;
 		obj.OnInit();
 	}
 
@@ -96,7 +98,7 @@ public class Character : MonoBehaviour
 		}
 		weaponData = weaponList.GetWeaponData(weapon);
 		currentWeapon = Instantiate(weaponData.weapon, weaponBox);
-
+		
 	}
 
 	public void AddEnemy(Character chars)

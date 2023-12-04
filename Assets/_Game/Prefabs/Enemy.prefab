@@ -528,10 +528,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
+  m_Radius: 0.5347452
+  m_Height: 2.8720813
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.034745216, y: 0.93604064, z: 0}
 --- !u!114 &7514850651772749985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,14 +545,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
-  detectDistant: 5
-  enemies: []
   detectedEnemies: []
   weaponBox: {fileID: 2228200816154698555}
   characterLayer:
     serializedVersion: 2
     m_Bits: 64
   weaponList: {fileID: 11400000, guid: 247865a864f636d43b849086c3a2008c, type: 2}
+  attackRange: 5.2
+  attackCD: 1.5
   isDead: 0
   isAtack: 0
   isMoving: 0
