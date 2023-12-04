@@ -28,6 +28,7 @@ public class Character : MonoBehaviour
 	{
 		detectedEnemies = new List<Character>();
 		anim = GetComponent<Animator>();
+		isDead = false;
 	}
 
 	public Character SelectTarget()
@@ -58,8 +59,16 @@ public class Character : MonoBehaviour
 			isAtack = true;
 			ThrowWeapon(target);
 			Invoke(nameof(ResetAttack), attackCD);
+			if (target.isDead)
+			{
+				RemoveEnemy(target); // Remove enemy after attack!
+			}
 		}
 		if (isAtack && isMoving)
+		{
+			return;
+		}
+		if (currentWeapon == null)
 		{
 			return;
 		}
@@ -69,7 +78,7 @@ public class Character : MonoBehaviour
 	{
 		anim.SetBool("IsAttack", false);
 		isAtack = false;
-		detectedEnemies.Clear();
+		//detectedEnemies.Clear();
 	}
 
 	public void ThrowWeapon(Character target)
@@ -87,6 +96,15 @@ public class Character : MonoBehaviour
 	//Hat hat;
 	//pants
 	//Wings
+
+	public void GetWeapon(WeaponType weapon)
+	{
+		if (weaponData == null)
+		{
+			weaponData = weaponList.GetWeaponData(weapon);
+			currentWeapon = Instantiate(weaponData.weapon, weaponBox);
+		}
+	}
 
 	public void ChangeWeapon(WeaponType weapon)
 	{
@@ -108,7 +126,10 @@ public class Character : MonoBehaviour
 
 	public void RemoveEnemy(Character chars)
 	{
-		detectedEnemies.RemoveAt(detectedEnemies.IndexOf(chars));
+		if (!chars.isDead)
+		{
+			detectedEnemies.RemoveAt(detectedEnemies.IndexOf(chars));
+		}
 	}
 
 	public virtual void OnDeath() // Tach ra lam 2 ham, dung pooling de despawn enemy va

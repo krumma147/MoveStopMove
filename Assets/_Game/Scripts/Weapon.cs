@@ -16,9 +16,13 @@ public class Weapon : MonoBehaviour
 
 	public void ChangeColor()
 	{
+		Debug.Log(weaponObj == null);
+		Debug.Log(weaponObj.GetComponent<Renderer>() == null);
+		Debug.Log(weaponObj.GetComponent<Renderer>().materials.Length > 0);
 		List<Material> myMaterials = weaponObj.GetComponent<Renderer>().materials.ToList();
 		myMaterials[0].color = GetColor(PartColor.BLUE);
 		myMaterials[1].color = GetColor(PartColor.GRAY);
+		//Debug.Log(myMaterials[0].color + myMaterials[1].color);
 	}
 
 	public Color GetColor(PartColor color) {

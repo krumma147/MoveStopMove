@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class Player : Character
 {
-	[SerializeField] private FloatingJoystick _joystick;
 	[SerializeField] private Transform playerCircle;
 	protected PlayerState currentState;
+	public FloatingJoystick _joystick;
 	void Start()
     {
 		this.OnInit();
@@ -19,9 +19,13 @@ public class Player : Character
 		base.OnInit();
 		if (currentWeapon == null)
 		{
-			ChangeWeapon((WeaponType) 2);
-			currentWeapon.ChangeColor();
+			GetWeapon((WeaponType) 2);
 		}
+		else
+		{
+			ChangeWeapon((WeaponType)2);
+		}
+		currentWeapon.ChangeColor();
 		CameraManager.Instance.SetTarget(gameObject.transform);
 		currentState = PlayerState.Idle;
 	}
@@ -35,6 +39,10 @@ public class Player : Character
 		{
 			Attack(target);
 			currentState = PlayerState.Attacking;
+		}
+		if (isDead)
+		{
+			GameplayManager.Instance.PlayerIsDead();
 		}
 	}
 

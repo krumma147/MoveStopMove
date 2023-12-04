@@ -20,7 +20,6 @@ public class AttackState : IState<Enemy>
 			int number = Random.Range(1, 3);
 			if(number == 2)
 			{
-				Debug.Log(number);
 				enemy.Attack(target);
 			}
 			else

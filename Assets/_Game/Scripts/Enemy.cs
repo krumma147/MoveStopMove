@@ -33,7 +33,7 @@ public class Enemy : Character
 		}
 		if(detectedEnemies.Count > 0)
 		{
-			Debug.Log(detectedEnemies[0]);
+			//Debug.Log(detectedEnemies[0]);
 		}
 	}
 

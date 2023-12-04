@@ -18,7 +18,7 @@ public class Range : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		Character chars = other.GetComponent<Character>();
-		if (chars != null && chars != character)
+		if (chars != null && chars != character )
         {
 			character.AddEnemy(chars);
 		}
