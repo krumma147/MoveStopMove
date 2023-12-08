@@ -43,7 +43,7 @@ public class Enemy : Character
 		agent = gameObject.GetComponent<NavMeshAgent>();
 		DisableTargetCircle();
 		ChangeState(new PatrolState());
-		ChangeWeapon((WeaponType) 2);
+		ChangeWeapon(WeaponType.AXE2);
 		currentWeapon.ChangeColor();
 	}
 

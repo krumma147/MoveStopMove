@@ -28,7 +28,7 @@ public class Range : MonoBehaviour
 	private void OnTriggerExit(Collider other)
 	{
 		Character chars = other.GetComponent<Character>();
-		if (chars != null && chars != character)
+		if (chars != null && !character.ExistEnemy(chars))
 		{
 			character.RemoveEnemy(chars);
 		}

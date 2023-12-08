@@ -28,9 +28,8 @@ public class GameplayManager : Singleton<GameplayManager>
 
 	public void SpawnPlayer()
 	{
-		Player player = playerPrefab.GetComponent<Player>();
+		Player player = Instantiate(playerPrefab, playerSpawnLoc) as Player;
 		player._joystick = _joystick;
-		Instantiate(player, playerSpawnLoc);
 		player.OnInit();
 	}
 

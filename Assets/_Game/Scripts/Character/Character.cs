@@ -47,27 +47,19 @@ public class Character : MonoBehaviour
 		}
 		return target;
 	}
-
-	//Change this function to be normal and use invoke instead. Similar to the first game project, could add canAttack var
 	public virtual void Attack(Character target)
 	{
 
-		if (target != null && !isMoving && !isAtack)
+		if (target != null && !isMoving && !isAtack && !target.isDead)
 		{
 			transform.LookAt(target.transform.position);
-			anim.SetBool("IsAttack", true);
+			anim.SetBool(Constant.AttackAnim, true);
 			isAtack = true;
 			ThrowWeapon(target);
 			Invoke(nameof(ResetAttack), attackCD);
-			if (target.isDead)
-			{
-				RemoveEnemy(target); // Remove enemy after attack!
-			}
+			
 		}
-		if (isAtack && isMoving)
-		{
-			return;
-		}
+		
 		if (currentWeapon == null)
 		{
 			return;
@@ -76,19 +68,17 @@ public class Character : MonoBehaviour
 
 	protected virtual void ResetAttack()
 	{
-		anim.SetBool("IsAttack", false);
+		anim.SetBool(Constant.AttackAnim, false);
 		isAtack = false;
-		//detectedEnemies.Clear();
 	}
 
 	public void ThrowWeapon(Character target)
 	{
 		//Bullet have problem!
-		Bullet obj = Instantiate(weaponData.bullet, weaponBox.position, weaponBox.rotation);
-		obj.ChangeColor();
-		obj.target = target.transform.position;
-		obj.shooter = this;
-		obj.OnInit();
+		Bullet bullet = Instantiate(weaponData.bullet, weaponBox.position, weaponBox.rotation);
+		bullet.ChangeColor();
+		bullet.target = target.transform.position;
+		bullet.shooter = this;
 	}
 
 	
@@ -132,10 +122,15 @@ public class Character : MonoBehaviour
 		}
 	}
 
+	public bool ExistEnemy(Character chars)
+	{
+		return detectedEnemies.Contains(chars);
+	}
+
 	public virtual void OnDeath() // Tach ra lam 2 ham, dung pooling de despawn enemy va
 	{
 		isDead = true;
-		anim.SetBool("IsDead", true);
+		anim.SetBool(Constant.DeadAnim, true);
 		Invoke(nameof(OnDespawn), 1.5f);
 	}
 

@@ -5,7 +5,8 @@ using UnityEngine;
 public class Constant 
 {
 	public const string TAG_PLAYER = "";
-
+	public const string AttackAnim = "IsAttack";
+	public const string DeadAnim = "IsDead";
 
 }
 
@@ -41,3 +42,4 @@ public enum PartColor
 	GREEN = 4,
 	GRAY = 5,
 }
+
