@@ -21,6 +21,8 @@ public class Range : MonoBehaviour
 		if (chars != null && chars != character )
         {
 			character.AddEnemy(chars);
+			Enemy enemy = (Enemy)chars;
+			enemy.EnableTargetCircle();
 		}
 		
 	}
@@ -28,9 +30,11 @@ public class Range : MonoBehaviour
 	private void OnTriggerExit(Collider other)
 	{
 		Character chars = other.GetComponent<Character>();
-		if (chars != null && !character.ExistEnemy(chars))
+		if (character.ExistEnemy(chars))
 		{
 			character.RemoveEnemy(chars);
+			Enemy enemy = (Enemy)chars;
+			enemy.DisableTargetCircle();
 		}
 	}
 

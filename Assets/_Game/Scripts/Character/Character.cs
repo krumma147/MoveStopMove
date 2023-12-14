@@ -6,28 +6,25 @@ using static Player;
 
 public class Character : MonoBehaviour
 {
-	//Try using queue for enemies, add indicator and UI
+	//TODO: Try using queue for enemies, add indicator and UI
 	[SerializeField] protected float movementSpeed = 5f;
-	protected Animator anim;
-	public List<Character> detectedEnemies;
-	[SerializeField] protected Transform weaponBox;
+	[SerializeField] protected Animator anim;
 	[SerializeField] LayerMask characterLayer;
 	[SerializeField] protected WeaponList weaponList;
 	protected WeaponItemData weaponData;
 	protected Weapon currentWeapon;
+	public Transform weaponBox;
 
+	public List<Character> detectedEnemies;
 	public float attackRange = 5.2f;
 	public float attackCD = 1.5f;
 	public bool isDead = false;
 	public bool isAtack = false;
 	public bool isMoving = false;	
-	
-	// Start is called before the first frame update
 
 	virtual public void OnInit()
 	{
 		detectedEnemies = new List<Character>();
-		anim = GetComponent<Animator>();
 		isDead = false;
 	}
 
@@ -49,13 +46,12 @@ public class Character : MonoBehaviour
 	}
 	public virtual void Attack(Character target)
 	{
-
 		if (target != null && !isMoving && !isAtack && !target.isDead)
 		{
 			transform.LookAt(target.transform.position);
 			anim.SetBool(Constant.AttackAnim, true);
 			isAtack = true;
-			ThrowWeapon(target);
+			currentWeapon.ThrowWeapon(target, this, weaponData.bullet);
 			Invoke(nameof(ResetAttack), attackCD);
 			
 		}
@@ -72,16 +68,6 @@ public class Character : MonoBehaviour
 		isAtack = false;
 	}
 
-	public void ThrowWeapon(Character target)
-	{
-		//Bullet have problem!
-		Bullet bullet = Instantiate(weaponData.bullet, weaponBox.position, weaponBox.rotation);
-		bullet.ChangeColor();
-		bullet.target = target.transform.position;
-		bullet.shooter = this;
-	}
-
-	
 	// add these later on
 	//Hat hat;
 	//pants

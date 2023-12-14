@@ -48,9 +48,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletObj: {fileID: 4011240560476838187}
+  deSpawnTime: 1.5
+  throwPosition: {x: 0, y: 0, z: 0}
   shooter: {fileID: 0}
-  target: {x: 0, y: 0, z: 0}
+  Target: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
   bulletSpeed: 10
+  destination: {x: 0, y: 0, z: 0}
   bulletTransform: {fileID: 0}
 --- !u!54 &5505887619557305944
 Rigidbody:
@@ -66,7 +70,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 36
   m_CollisionDetection: 0
 --- !u!65 &3636940183548276737
 BoxCollider:

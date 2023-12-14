@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BotSpawnList", menuName = "ScriptableObject/BotSpawnList", order = 2)]
 public class BotSpawnList : ScriptableObject
 {
-	public List<Enemy> enemies;
+	public List<BotSpawnData> spawnLocations;
 }
 
 [Serializable]

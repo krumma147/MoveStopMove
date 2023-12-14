@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
@@ -8,42 +9,48 @@ using static UnityEngine.GraphicsBuffer;
 public class Bullet : MonoBehaviour
 {
 	[SerializeField] private GameObject bulletObj;
-	private float deSpawnTime = 1f;
+	[SerializeField] private float deSpawnTime = 1.5f;
+	public Vector3 throwPosition;
 	public Character shooter;
-	public Vector3 target;
+	public Character Target;
+	public Vector3 targetPosition;
 	public float bulletSpeed = 10f;
 	public Vector3 destination;
-
-
 	public Transform bulletTransform;
 
+	//UNDONE: weapon target position.y = throw posotion.y
 	private void Start()
 	{
 		bulletTransform = transform;
-		bulletTransform.Rotate(new Vector3(0f, 0f, 0f));
+		bulletTransform.Rotate(new Vector3(-30f, 90f, 0f));
+		destination = new Vector3(targetPosition.x, throwPosition.y, targetPosition.z);
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		Spinning();
-		destination = new Vector3(target.x, 0f, target.z);
 		bulletTransform.position = Vector3.MoveTowards(bulletTransform.position, destination, Time.deltaTime * bulletSpeed);
 		Invoke(nameof(OnDespawn), deSpawnTime);
+		if (shooter.CompareTag("Player"))
+		{
+			Debug.Log($"pos: {transform.position}");
+		}
 	}
 
 	public void Spinning()
 	{
+
 		bulletTransform.Rotate(new Vector3(0f, 0f, 100 * bulletSpeed * Time.deltaTime), Space.Self);
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
-		Character victim = other.GetComponent<Character>();
+		Target = other.GetComponent<Character>();
 
-		if (victim != null && victim != shooter)
+		if (Target != null && Target != shooter)
 		{
-			victim.OnDeath();
+			Target.OnDeath();
 			OnDespawn();
 		}
 	}

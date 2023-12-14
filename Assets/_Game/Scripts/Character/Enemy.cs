@@ -76,7 +76,7 @@ public class Enemy : Character
 		}
 	}
 
-	public bool RandomPoint(Vector3 center, float range, out Vector3 result) // Random giua viec di chuyen hoac tan cong.
+	public bool RandomPoint(Vector3 center, float range, out Vector3 result) // Random vi tri di chuyen.
 	{
 		Vector3 randomPoint = center + Random.insideUnitSphere * range;
 		NavMeshHit hit;
@@ -123,5 +123,14 @@ public class Enemy : Character
 		selectedCircle.SetActive(false);
 		ChangeState(new IdleState());
 		base.OnDeath();
+	}
+
+	public void EnableBot()
+	{
+		gameObject.SetActive(true);
+	}
+
+	public void DisableBot() {
+		gameObject.SetActive(false);
 	}
 }

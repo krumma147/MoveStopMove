@@ -1176,6 +1176,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+--- !u!95 &233133562242295747 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 2939995903095824803}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6623981018576468138 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
@@ -1208,12 +1213,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
-  detectedEnemies: []
+  anim: {fileID: 233133562242295747}
   weaponBox: {fileID: 1082484431}
   characterLayer:
     serializedVersion: 2
     m_Bits: 64
   weaponList: {fileID: 11400000, guid: 247865a864f636d43b849086c3a2008c, type: 2}
+  detectedEnemies: []
   attackRange: 5.2
   attackCD: 1.5
   isDead: 0

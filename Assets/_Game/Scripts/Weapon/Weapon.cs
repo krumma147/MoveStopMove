@@ -5,12 +5,20 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-	private Rigidbody rb;
 	[SerializeField] private GameObject weaponObj;
+	private Rigidbody rb;
 
 	public void OnInit()
 	{
 		rb = weaponObj.GetComponent<Rigidbody>();
+	}
+	public void ThrowWeapon(Character target, Character shooter, Bullet bulletObject)
+	{
+		Bullet bullet = Instantiate(bulletObject, shooter.weaponBox.position, shooter.weaponBox.rotation);
+		bullet.ChangeColor();
+		bullet.targetPosition = target.transform.position;
+		bullet.shooter = shooter;
+		bullet.throwPosition = shooter.weaponBox.position;
 	}
 
 	public void ChangeColor()

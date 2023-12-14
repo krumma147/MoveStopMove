@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Constant 
 {
-	public const string TAG_PLAYER = "";
+	//public const string TAG_PLAYER = "";
 	public const string AttackAnim = "IsAttack";
 	public const string DeadAnim = "IsDead";
 

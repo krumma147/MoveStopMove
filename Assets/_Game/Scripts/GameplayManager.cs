@@ -5,10 +5,13 @@ using UnityEngine;
 public class GameplayManager : Singleton<GameplayManager>
 {
 	[SerializeField] private Character playerPrefab;
+	[SerializeField] private Character botPrefab;
 	[SerializeField] private Transform playerSpawnLoc;
     [SerializeField] private EndGamePanel endGamePanel;
 	[SerializeField] private GameObject gamePlayUI;
 	[SerializeField] private FloatingJoystick _joystick;
+	[SerializeField] private BotSpawnList botSpawnPositions;
+	private List<Enemy> bots;
 	private bool playerIsDead = false;
 	// Start is called before the first frame update
 	void Start()
@@ -28,9 +31,10 @@ public class GameplayManager : Singleton<GameplayManager>
 
 	public void SpawnPlayer()
 	{
-		Player player = Instantiate(playerPrefab, playerSpawnLoc) as Player;
+		Player player = Instantiate(playerPrefab, playerSpawnLoc.position, playerSpawnLoc.rotation) as Player;
 		player._joystick = _joystick;
 		player.OnInit();
+		CameraManager.Instance.SetTarget(player.transform);
 	}
 
 	public void EnableGamePlayUI()
@@ -57,4 +61,16 @@ public class GameplayManager : Singleton<GameplayManager>
 	{
 		playerIsDead = true;
 	}
+
+	public void SpawnBots()
+	{
+		foreach(BotSpawnData spawnData in botSpawnPositions.spawnLocations)
+		{
+			Enemy enemy = Instantiate(botPrefab, spawnData.spawnLoc.position, spawnData.spawnLoc.rotation) as Enemy;
+			enemy.OnInit();
+			enemy.DisableBot();
+			bots.Add(enemy);
+		}
+	}
+
 }

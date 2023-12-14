@@ -545,12 +545,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
-  detectedEnemies: []
+  anim: {fileID: 4880402077937438415}
   weaponBox: {fileID: 2228200816154698555}
   characterLayer:
     serializedVersion: 2
     m_Bits: 64
   weaponList: {fileID: 11400000, guid: 247865a864f636d43b849086c3a2008c, type: 2}
+  detectedEnemies: []
   attackRange: 5.2
   attackCD: 1.5
   isDead: 0

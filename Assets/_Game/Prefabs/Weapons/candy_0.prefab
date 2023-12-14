@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ee13f59163936479ecf4c190fb6d45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponBullet: {fileID: 4373657131717663723, guid: d0ed5dd76f43bdd4ab1d82b8c8ebc9ef, type: 3}
   weaponObj: {fileID: 2714619181090893150}
 --- !u!1001 &2714619181090991102
 PrefabInstance:

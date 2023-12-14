@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c1497424a84064e80933e83f13713c, type: 3}
   m_Name: BotSpawnList
   m_EditorClassIdentifier: 
-  enemies:
-  - {fileID: 0}
+  spawnLocations:
+  - spawnLoc: {fileID: 0}
